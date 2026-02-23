@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTheme } from '../../hooks/useTheme'
+
+const DROPDOWN_CLOSE_DELAY_MS = 320
 
 const REPO_URL = 'https://github.com/Jeremias0618/VectorLab'
 const SQUOOSH_URL = 'https://squoosh.app/'
@@ -18,8 +20,29 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [exploreOpen, setExploreOpen] = useState(false)
   const [editorOpen, setEditorOpen] = useState(false)
+  const editorCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const exploreCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isHome = location.pathname === '/home' || location.pathname === '/'
   const isEditor = location.pathname.startsWith('/editor')
+
+  const clearEditorTimer = () => {
+    if (editorCloseTimerRef.current) {
+      clearTimeout(editorCloseTimerRef.current)
+      editorCloseTimerRef.current = null
+    }
+  }
+  const clearExploreTimer = () => {
+    if (exploreCloseTimerRef.current) {
+      clearTimeout(exploreCloseTimerRef.current)
+      exploreCloseTimerRef.current = null
+    }
+  }
+  const scheduleEditorClose = () => {
+    editorCloseTimerRef.current = setTimeout(() => setEditorOpen(false), DROPDOWN_CLOSE_DELAY_MS)
+  }
+  const scheduleExploreClose = () => {
+    exploreCloseTimerRef.current = setTimeout(() => setExploreOpen(false), DROPDOWN_CLOSE_DELAY_MS)
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)] border-b border-stone-200/80 dark:border-slate-800/80">
@@ -55,8 +78,11 @@ export default function Navbar() {
             ))}
             <div
               className="relative"
-              onMouseEnter={() => setEditorOpen(true)}
-              onMouseLeave={() => setEditorOpen(false)}
+              onMouseEnter={() => {
+                clearEditorTimer()
+                setEditorOpen(true)
+              }}
+              onMouseLeave={scheduleEditorClose}
             >
               <span
                 className={`text-sm font-medium transition-colors cursor-default ${
@@ -68,17 +94,20 @@ export default function Navbar() {
                 Editor
               </span>
               {editorOpen && (
-                <div className="absolute left-0 top-full mt-0 pt-2">
-                  <div className="min-w-[140px] bg-white dark:bg-slate-800 border border-stone-200 dark:border-slate-700 rounded-xl shadow-xl overflow-hidden py-1">
+                <div
+                  className="nav-tooltip absolute left-0 top-full -mt-2 pt-3"
+                  onMouseEnter={() => {
+                    clearEditorTimer()
+                    setEditorOpen(true)
+                  }}
+                  onMouseLeave={scheduleEditorClose}
+                >
+                  <div className="nav-tooltip-panel">
                     {editorLinks.map(({ to, label }) => (
                       <Link
                         key={to}
                         to={to}
-                        className={`block px-4 py-2.5 text-sm font-medium transition-colors ${
-                          location.pathname === to
-                            ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
-                            : 'text-stone-700 dark:text-slate-300 hover:bg-stone-50 dark:hover:bg-slate-700'
-                        }`}
+                        className={`nav-tooltip-item ${location.pathname === to ? 'is-active' : ''}`}
                       >
                         {label}
                       </Link>
@@ -95,47 +124,35 @@ export default function Navbar() {
             >
               Documentación
             </a>
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setExploreOpen(!exploreOpen)}
-                onBlur={() => setTimeout(() => setExploreOpen(false), 180)}
-                className="text-sm font-medium text-stone-700 dark:text-slate-300 hover:text-stone-900 dark:hover:text-white transition-colors"
-                aria-haspopup="true"
-                aria-expanded={exploreOpen}
-                aria-label="Explorar herramientas"
-              >
+            <div
+              className="relative"
+              onMouseEnter={() => {
+                clearExploreTimer()
+                setExploreOpen(true)
+              }}
+              onMouseLeave={scheduleExploreClose}
+            >
+              <span className="text-sm font-medium text-stone-700 dark:text-slate-300 cursor-default transition-colors">
                 Explorar
-              </button>
+              </span>
               {exploreOpen && (
-                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-0 pt-2">
-                  <div className="w-[420px] bg-white dark:bg-slate-800 border border-stone-200 dark:border-slate-700 rounded-xl shadow-xl overflow-hidden">
-                    <div className="grid grid-cols-2 gap-px bg-stone-100 dark:bg-slate-700">
-                      <a
-                        href={SQUOOSH_URL}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 hover:bg-stone-50 dark:hover:bg-slate-700/80 transition-colors group/item"
-                      >
-                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-primary)]/30 text-[var(--color-primary)]">
-                          <span className="material-icons-round text-2xl">image</span>
-                        </span>
-                        <div className="flex-1 min-w-0 text-left">
-                          <span className="font-semibold text-stone-900 dark:text-white block">Conversor a WebP</span>
-                          <span className="text-xs text-stone-500 dark:text-slate-400">Squoosh</span>
-                        </div>
-                        <span className="material-icons-round text-stone-400 group-hover/item:text-[var(--color-primary)] transition-colors">arrow_forward</span>
-                      </a>
-                      <div className="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 opacity-60 cursor-default">
-                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border-2 border-stone-200 dark:border-slate-600 text-stone-400">
-                          <span className="material-icons-round text-2xl">add</span>
-                        </span>
-                        <div className="flex-1 min-w-0">
-                          <span className="font-semibold text-stone-500 dark:text-slate-500 block">Más pronto</span>
-                          <span className="text-xs text-stone-400 dark:text-slate-500">Nuevas herramientas</span>
-                        </div>
-                      </div>
-                    </div>
+                <div
+                  className="nav-tooltip absolute left-0 top-full -mt-2 pt-3"
+                  onMouseEnter={() => {
+                    clearExploreTimer()
+                    setExploreOpen(true)
+                  }}
+                  onMouseLeave={scheduleExploreClose}
+                >
+                  <div className="nav-tooltip-panel">
+                    <a
+                      href={SQUOOSH_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="nav-tooltip-item"
+                    >
+                      Conversor a WebP
+                    </a>
                   </div>
                 </div>
               )}

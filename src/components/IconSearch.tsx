@@ -93,7 +93,6 @@ export function IconSearch({ onSelect, currentColor = '#0c6bdc' }: IconSearchPro
   return (
     <div className="icon-search">
       <label className="icon-search-label">
-        <span>Buscar iconos</span>
         <input
           type="search"
           className="icon-search-input"

@@ -61,8 +61,8 @@ export function ExportPanel({
     <div className="editor-panel export-panel">
       <h3>Exportar</h3>
       <div className="controls">
-        <label>
-          <span>Formato</span>
+        <label className="control-row">
+          <span className="control-label">Formato</span>
           <select
             value={format}
             onChange={(e) => setFormat(e.target.value as ExportFormat)}
@@ -73,8 +73,8 @@ export function ExportPanel({
           </select>
         </label>
         {(format === 'png' || format === 'webp') && (
-          <label>
-            <span>{exportWidth != null ? 'Alto (px)' : 'Tamaño (px)'}</span>
+          <label className="control-row">
+            <span className="control-label">{exportWidth != null ? 'Alto (px)' : 'Tamaño (px)'}</span>
             <select
               value={size}
               onChange={(e) => setSize(Number(e.target.value))}

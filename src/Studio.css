@@ -29,7 +29,7 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  padding: 1rem 1.5rem 1rem 1rem;
+  padding: 1.75rem 1.5rem 1rem 1rem;
   width: 100%;
   max-width: 80rem;
   margin-left: auto;
@@ -111,6 +111,7 @@
   .studio-preview-box {
     min-height: 0;
     height: 100%;
+    max-height: 72vh;
     flex: 1;
   }
 }
@@ -128,18 +129,22 @@
   display: flex;
   min-height: 0;
   width: 100%;
+  max-height: 62vh;
   border-radius: 10px;
   overflow: hidden;
+  position: relative;
 }
 @media (max-width: 1023px) {
   .studio-preview-content {
     min-height: 280px;
+    max-height: 55vh;
   }
 }
 /* Contenedor tipo PNG: cuadrícula de transparencia (como en editores de imagen) */
 .studio-preview-canvas {
   flex: 1;
   width: 100%;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -162,39 +167,156 @@
     linear-gradient(45deg, transparent 75%, #334155 75%),
     linear-gradient(-45deg, transparent 75%, #334155 75%);
 }
+/* Contenedor del SVG: tamaño mínimo para que el icono se vea grande y siempre centrado */
 .studio-preview-inner {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: min(75%, 280px);
+  height: min(75%, 280px);
   max-width: 100%;
   max-height: 100%;
+  transform-origin: center center;
 }
 .studio-preview-inner svg {
+  width: 100%;
+  height: 100%;
   max-width: 100%;
   max-height: 100%;
-  width: auto;
-  height: auto;
+  object-fit: contain;
   display: block;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+/* Botones de zoom en la esquina inferior derecha de la vista previa */
+.studio-preview-zoom-btns {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+  z-index: 5;
+}
+.studio-preview-zoom-btn {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+.studio-preview-zoom-btn:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.studio-preview-zoom-btn:active {
+  transform: scale(0.95);
 }
 .studio-preview-empty {
   color: var(--color-muted);
   font-size: 0.9rem;
   margin: 0;
 }
-/* Exportar: abajo del cuadro de vista previa, mismo ancho */
+/* Exportar y Configuración: abajo del cuadro de vista previa, dos cuadros lado a lado */
 .studio-preview-export {
   flex-shrink: 0;
   width: 100%;
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
 }
-.studio-preview-export .export-panel {
-  width: 100%;
+.studio-preview-export .export-panel,
+.studio-preview-export .config-panel {
+  flex: 1;
+  min-width: 200px;
   margin: 0;
   box-shadow: none;
+  background: var(--color-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
+/* Exportar: mismas filas que Edición del icono (label izquierda, control derecha) */
+.studio-preview-export .export-panel .controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.studio-preview-export .export-panel .control-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.studio-preview-export .export-panel .control-label {
+  min-width: 5.5rem;
+  color: var(--color-muted);
+}
+.studio-preview-export .export-panel .controls select {
+  height: 2.25rem;
+  min-height: 2.25rem;
+  box-sizing: border-box;
+}
+.studio-preview-export .export-panel .btn-download {
+  margin-top: 0.25rem;
+}
+/* Botones Exportar / Configuración: mismo tamaño */
+.studio-preview-export .btn-download,
+.studio-preview-export .btn-export-config,
+.studio-preview-export .btn-import-config {
+  min-height: 2.5rem;
+  min-width: 10rem;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+.config-panel-desc {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin: 0 0 0.75rem 0;
+  line-height: 1.35;
+}
+.config-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.config-file-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.btn-export-config,
+.btn-import-config {
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+.btn-export-config:hover,
+.btn-import-config:hover {
+  background: var(--color-bg);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.btn-export-config { background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
+.btn-export-config:hover { filter: brightness(1.1); color: #fff; }
 .studio-footer {
   margin-top: 2rem;
   padding-top: 1rem;
@@ -222,7 +344,45 @@
 .preview-svg { display: flex; align-items: center; justify-content: center; }
 .preview-svg svg { max-width: 100%; height: auto; display: block; }
 .preview-logo svg { max-height: 80px; }
-/* Secciones del editor */
+/* Tarjetas del editor de iconos: bloques bien separados */
+.icon-editor-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.icon-editor-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 1rem;
+  font-size: 0.85rem;
+}
+.icon-editor-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  margin: 0 0 0.75rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.icon-editor-card-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+/* Secciones genéricas (por si se usan en otros editores) */
 .editor-section {
   padding: 0.75rem 0;
   border-bottom: 1px solid var(--color-border);
@@ -246,19 +406,57 @@
 }
 .control-label { min-width: 5.5rem; color: var(--color-muted); }
 .control-value { color: var(--color-text); font-variant-numeric: tabular-nums; }
-.controls input[type='text'], .controls input[type='color'], .controls select {
+.control-row-shapes { align-items: flex-start; }
+.control-row-shapes .control-label { flex-shrink: 0; }
+.shape-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.shape-option {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.shape-option:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-accent);
+}
+.shape-option.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: white;
+}
+.control-row-checkbox { gap: 0.5rem; }
+.control-row-checkbox input[type='checkbox'] { accent-color: var(--color-accent); cursor: pointer; }
+.controls input[type='text'], .controls select {
   padding: 0.4rem 0.6rem; border-radius: 6px; border: 1px solid var(--color-border);
   background: var(--color-bg); color: var(--color-text); font-size: 0.9rem;
 }
+.controls input[type='color'] {
+  padding: 0; border: none; background: transparent; cursor: pointer;
+  width: 2.25rem; height: 2rem; border-radius: 4px;
+}
 .controls input[type='range'] { flex: 1; min-width: 80px; accent-color: var(--color-accent); }
 .color-row { align-items: center; }
-.color-picker { width: 2.25rem; height: 2rem; padding: 2px; cursor: pointer; border-radius: 6px; border: 1px solid var(--color-border); }
+.color-picker { width: 2.25rem; height: 2rem; padding: 0; border: none; background: transparent; cursor: pointer; border-radius: 4px; }
 .color-hex-input {
   flex: 1;
   min-width: 5rem;
   max-width: 6.5rem;
   font-family: ui-monospace, monospace;
   font-size: 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 .controls-subtitle { font-size: 0.85rem; font-weight: 600; color: var(--color-text); margin: 0.5rem 0 0.25rem 0; }
 .controls label span:first-of-type { min-width: 5.5rem; color: var(--color-muted); }
@@ -302,3 +500,111 @@
 }
 .icon-search-placeholder-visible { display: inline !important; }
 .dark .icon-search-error { color: #f87171; }
+
+/* Subir / pegar imagen en Seleccionar icono */
+.icon-upload-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+}
+.icon-upload-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.icon-upload-btn {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.icon-upload-btn:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* Modal: elegir imagen del portapapeles (varias imágenes) */
+.paste-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+.paste-modal {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+.paste-modal-title {
+  margin: 0 0 0.35rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.paste-modal-desc {
+  margin: 0 0 1rem 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+.paste-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.paste-modal-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  padding: 0.5rem;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.paste-modal-item:hover {
+  border-color: var(--color-accent);
+  background: var(--color-surface-hover);
+}
+.paste-modal-item img {
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+  display: block;
+}
+.paste-modal-cancel {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+}
+.paste-modal-cancel:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-accent);
+}

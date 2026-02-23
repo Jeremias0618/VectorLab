@@ -52,3 +52,57 @@ body {
   margin: 0;
   min-height: 100vh;
 }
+
+/* Tooltips / dropdowns de la barra superior */
+@keyframes nav-tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.nav-tooltip {
+  animation: nav-tooltip-in 0.2s ease-out forwards;
+}
+.nav-tooltip-panel {
+  min-width: 140px;
+  padding: 0.35rem;
+  background: var(--color-background-light);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+.dark .nav-tooltip-panel {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.nav-tooltip-item {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left;
+  color: #1c1917;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  text-decoration: none;
+}
+.dark .nav-tooltip-item {
+  color: #f1f5f9;
+}
+.nav-tooltip-item:hover {
+  background: rgba(12, 107, 220, 0.1);
+  color: var(--color-primary);
+}
+.nav-tooltip-item.is-active {
+  background: rgba(12, 107, 220, 0.12);
+  color: var(--color-primary);
+}
