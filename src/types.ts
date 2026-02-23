@@ -36,10 +36,24 @@ export interface IconState {
 
 export interface LogoState {
   text: string
+  /** Familia de fuente (nombre CSS, ej. Poppins, Inter) */
+  fontFamily: string
+  /** Peso de la fuente (100-900) */
+  fontWeight: number
+  /** Tamaño de fuente en px */
   fontSize: number
+  /** Espaciado entre letras en px */
+  letterSpacing: number
+  /** Color del texto */
   color: string
   backgroundColor: string
   shape: 'none' | 'circle' | 'rounded'
+  /** Si true, se dibuja un cuadro/borde alrededor del logo */
+  frameEnabled: boolean
+  /** Color del borde del cuadro */
+  frameColor: string
+  /** Si true, el texto usa el mismo color que el borde */
+  frameBorderSameAsContent: boolean
 }
 
 /** Configuración guardada para exportar/importar el estado completo del Studio */

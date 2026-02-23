@@ -7,11 +7,25 @@ const DROPDOWN_CLOSE_DELAY_MS = 320
 const REPO_URL = 'https://github.com/Jeremias0618/VectorLab'
 const SQUOOSH_URL = 'https://squoosh.app/'
 
+const profileLinks = [
+  { href: 'mailto:yeremitantaraico@gmail.com', label: 'Correo', icon: 'mdi-email-outline' as const },
+  { href: 'https://www.linkedin.com/in/yeremitantaraico/', label: 'LinkedIn', icon: 'mdi-linkedin' as const },
+  { href: 'https://g.dev/yeremitantaraico', label: 'Google Developer', icon: 'mdi-google' as const },
+  { href: REPO_URL, label: 'GitHub', icon: 'mdi-github' as const },
+  { href: 'https://www.credly.com/users/yeremitantaraico', label: 'Credly', icon: 'mdi-certificate-outline' as const },
+  { href: 'https://www.youtube.com/@yeremitantaraico', label: 'YouTube', icon: 'mdi-youtube' as const },
+] as const
+
 const navLinks = [{ to: '/home', label: 'Inicio' }] as const
 
 const editorLinks = [
   { to: '/editor/iconos', label: 'Iconos' },
   { to: '/editor/logos', label: 'Logos' },
+] as const
+
+const exploreLinks = [
+  { to: '/svg-converter', label: 'Conversor a SVG', internal: true },
+  { href: SQUOOSH_URL, label: 'Conversor a WebP', internal: false },
 ] as const
 
 export default function Navbar() {
@@ -20,11 +34,26 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [exploreOpen, setExploreOpen] = useState(false)
   const [editorOpen, setEditorOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
   const editorCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const exploreCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const profileCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const profileDropdownRef = useRef<HTMLDivElement>(null)
   const isHome = location.pathname === '/home' || location.pathname === '/'
   const isEditor = location.pathname.startsWith('/editor')
+  const isExplore = location.pathname === '/svg-converter' || location.pathname.endsWith('/svg-converter')
 
+  const clearProfileTimer = () => {
+    if (profileCloseTimerRef.current) {
+      clearTimeout(profileCloseTimerRef.current)
+      profileCloseTimerRef.current = null
+    }
+  }
+  const handleProfileLeave = (e: React.MouseEvent) => {
+    const target = e.relatedTarget
+    if (target instanceof Node && profileDropdownRef.current?.contains(target)) return
+    profileCloseTimerRef.current = setTimeout(() => setProfileOpen(false), DROPDOWN_CLOSE_DELAY_MS)
+  }
   const clearEditorTimer = () => {
     if (editorCloseTimerRef.current) {
       clearTimeout(editorCloseTimerRef.current)
@@ -116,23 +145,26 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-            <a
-              href={REPO_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="text-sm font-medium text-stone-700 dark:text-slate-300 hover:text-stone-900 dark:hover:text-white transition-colors"
+            <Link
+              to="/documentation"
+              className={`text-sm font-medium transition-colors ${
+                location.pathname === '/documentation'
+                  ? 'text-[var(--color-primary)]'
+                  : 'text-stone-700 dark:text-slate-300 hover:text-stone-900 dark:hover:text-white'
+              }`}
             >
               Documentación
-            </a>
+            </Link>
             <div
               className="relative"
-              onMouseEnter={() => {
-                clearExploreTimer()
-                setExploreOpen(true)
-              }}
+              onMouseEnter={() => { clearExploreTimer(); setExploreOpen(true) }}
               onMouseLeave={scheduleExploreClose}
             >
-              <span className="text-sm font-medium text-stone-700 dark:text-slate-300 cursor-default transition-colors">
+              <span
+                className={`text-sm font-medium cursor-default transition-colors ${
+                  isExplore ? 'text-[var(--color-primary)]' : 'text-stone-700 dark:text-slate-300 hover:text-stone-900 dark:hover:text-white'
+                }`}
+              >
                 Explorar
               </span>
               {exploreOpen && (
@@ -145,14 +177,27 @@ export default function Navbar() {
                   onMouseLeave={scheduleExploreClose}
                 >
                   <div className="nav-tooltip-panel">
-                    <a
-                      href={SQUOOSH_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="nav-tooltip-item"
-                    >
-                      Conversor a WebP
-                    </a>
+                    {exploreLinks.map((item) =>
+                      item.internal ? (
+                        <Link
+                          key={item.to}
+                          to={item.to}
+                          className={`nav-tooltip-item ${location.pathname === item.to ? 'is-active' : ''}`}
+                        >
+                          {item.label}
+                        </Link>
+                      ) : (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="nav-tooltip-item"
+                        >
+                          {item.label}
+                        </a>
+                      )
+                    )}
                   </div>
                 </div>
               )}
@@ -167,34 +212,64 @@ export default function Navbar() {
             </a>
           </nav>
 
-          {/* Derecha: tema + GitHub (con icono estrella) */}
-          <div className="flex items-center gap-3">
+          {/* Derecha: tema + Perfil (desktop) o solo tema (móvil) */}
+          <div className="flex items-center gap-1 pl-4 ml-2 border-l border-stone-200 dark:border-slate-700">
             <button
               type="button"
               onClick={toggleTheme}
-              className="h-9 w-9 flex items-center justify-center rounded-full bg-stone-100 dark:bg-slate-800 text-stone-600 dark:text-slate-400 hover:text-[var(--color-primary)] transition-colors"
+              className="h-9 w-9 flex items-center justify-center rounded-lg text-stone-500 dark:text-slate-400 hover:text-[var(--color-primary)] hover:bg-stone-100 dark:hover:bg-slate-800 transition-colors"
               aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
               title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
             >
               {theme === 'dark' ? (
-                <span className="material-icons-round text-lg">light_mode</span>
+                <span className="material-icons-round text-xl">light_mode</span>
               ) : (
-                <span className="material-icons-round text-lg">dark_mode</span>
+                <span className="material-icons-round text-xl">dark_mode</span>
               )}
             </button>
-            <a
-              href={REPO_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 h-9 px-5 rounded-full bg-[var(--color-primary)] text-white font-semibold text-sm shadow-sm hover:opacity-95 transition-opacity"
+            <div
+              className="hidden md:block relative"
+              onMouseEnter={() => { clearProfileTimer(); setProfileOpen(true) }}
+              onMouseLeave={handleProfileLeave}
             >
-              <span className="material-icons-round text-lg">star</span>
-              GitHub
-            </a>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-[var(--color-primary)] text-white font-semibold text-sm shadow-sm hover:opacity-95 transition-opacity"
+                aria-expanded={profileOpen}
+                aria-haspopup="true"
+                aria-label="Perfil y enlaces"
+              >
+                <span className="material-icons-round text-lg">person</span>
+                Perfil
+              </button>
+              {profileOpen && (
+                <div
+                  ref={profileDropdownRef}
+                  className="nav-tooltip absolute right-0 top-full pt-1"
+                  onMouseEnter={() => { clearProfileTimer(); setProfileOpen(true) }}
+                  onMouseLeave={handleProfileLeave}
+                >
+                  <div className="nav-profile-panel">
+                    {profileLinks.map(({ href, label, icon }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        target={href.startsWith('mailto:') ? undefined : '_blank'}
+                        rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
+                        className="nav-profile-item"
+                      >
+                        <span className={`mdi ${icon} nav-profile-icon`} aria-hidden />
+                        <span>{label}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
             <button
               type="button"
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden h-9 w-9 flex items-center justify-center rounded-full bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-slate-300"
+              className="md:hidden h-9 w-9 flex items-center justify-center rounded-lg text-stone-600 dark:text-slate-400 hover:bg-stone-100 dark:hover:bg-slate-800"
               aria-expanded={mobileOpen}
               aria-label="Abrir menú"
             >
@@ -245,19 +320,39 @@ export default function Navbar() {
                 {label}
               </Link>
             ))}
-            <a href={REPO_URL} target="_blank" rel="noreferrer" className="px-4 py-3 rounded-xl text-sm font-medium text-stone-700 dark:text-slate-300 hover:bg-stone-200 dark:hover:bg-slate-800">
+            <Link
+              to="/documentation"
+              onClick={() => setMobileOpen(false)}
+              className={`px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+                location.pathname === '/documentation'
+                  ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
+                  : 'text-stone-700 dark:text-slate-300 hover:bg-stone-200 dark:hover:bg-slate-800'
+              }`}
+            >
               Documentación
-            </a>
+            </Link>
+            <Link to="/svg-converter" onClick={() => setMobileOpen(false)} className="px-4 py-3 rounded-xl text-sm font-medium text-stone-700 dark:text-slate-300 hover:bg-stone-200 dark:hover:bg-slate-800">
+              Conversor a SVG
+            </Link>
             <a href={SQUOOSH_URL} target="_blank" rel="noreferrer" className="px-4 py-3 rounded-xl text-sm font-medium text-stone-700 dark:text-slate-300 hover:bg-stone-200 dark:hover:bg-slate-800">
               Conversor a WebP (Squoosh)
             </a>
-            <a href={REPO_URL} target="_blank" rel="noreferrer" className="px-4 py-3 rounded-xl text-sm font-medium text-stone-700 dark:text-slate-300 hover:bg-stone-200 dark:hover:bg-slate-800">
-              GitHub
-            </a>
-            <a href={REPO_URL} target="_blank" rel="noreferrer" className="mx-4 mt-2 py-3 rounded-full bg-[var(--color-primary)] text-white font-semibold text-sm text-center flex items-center justify-center gap-2">
-              <span className="material-icons-round text-lg">star</span>
-              Dar estrella en GitHub
-            </a>
+            <span className="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-slate-400">
+              Perfil
+            </span>
+            {profileLinks.map(({ href, label, icon }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith('mailto:') ? undefined : '_blank'}
+                rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
+                onClick={() => setMobileOpen(false)}
+                className="px-4 py-3 rounded-xl text-sm font-medium text-stone-700 dark:text-slate-300 hover:bg-stone-200 dark:hover:bg-slate-800 flex items-center gap-3"
+              >
+                <span className={`mdi ${icon} text-xl text-slate-500 dark:text-slate-400`} aria-hidden />
+                {label}
+              </a>
+            ))}
           </div>
         </div>
       </div>

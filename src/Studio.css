@@ -45,6 +45,13 @@
 .studio-header {
   margin-bottom: 1.5rem;
 }
+.studio-header-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.studio-header-title h1 {
+  margin: 0;
+}
 .studio-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 .studio-tabs button {
   padding: 0.5rem 1rem;
@@ -59,7 +66,7 @@
 .studio-tabs button:hover { background: var(--color-surface-hover); border-color: var(--color-accent); }
 .studio-tabs button.active { background: var(--color-accent); border-color: var(--color-accent); color: white; }
 
-/* Layout: izquierda fija y pegada a la izquierda, derecha ocupa todo lo demás */
+/* Layout: izquierda = editor (altura completa); derecha = vista previa arriba, export+config abajo */
 .studio-grid {
   flex: 1;
   display: grid;
@@ -70,7 +77,22 @@
 @media (min-width: 1024px) {
   .studio-grid {
     grid-template-columns: 320px 1fr;
-    min-height: calc(100vh - 5rem);
+    grid-template-rows: minmax(260px, 44vh) auto;
+    min-height: 360px;
+    flex: 0 0 auto;
+    max-height: 90vh;
+  }
+  .studio-left {
+    grid-column: 1;
+    grid-row: 1 / -1;
+  }
+  .studio-preview-box {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .studio-preview-export {
+    grid-column: 2;
+    grid-row: 2;
   }
 }
 /* Columna izquierda: dos bloques apilados con separación clara */
@@ -79,6 +101,18 @@
   flex-direction: column;
   gap: 1.25rem;
   min-height: 0;
+}
+.studio-left .editor-panel.icon-editor,
+.studio-left .editor-panel.logo-editor {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.studio-left .editor-panel.icon-editor .icon-editor-cards {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 /* Bloque 1 y 2 izquierda: mismo estilo de “bloque” */
 .studio-left .editor-panel,
@@ -89,6 +123,10 @@
   padding: 1.25rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   flex-shrink: 0;
+}
+.studio-left .editor-panel.icon-editor,
+.studio-left .editor-panel.logo-editor {
+  flex-shrink: 1;
 }
 .studio-left .export-panel {
   flex-shrink: 0;
@@ -111,7 +149,6 @@
   .studio-preview-box {
     min-height: 0;
     height: 100%;
-    max-height: 72vh;
     flex: 1;
   }
 }
@@ -129,7 +166,7 @@
   display: flex;
   min-height: 0;
   width: 100%;
-  max-height: 62vh;
+  max-height: 40vh;
   border-radius: 10px;
   overflow: hidden;
   position: relative;
@@ -226,7 +263,7 @@
   font-size: 0.9rem;
   margin: 0;
 }
-/* Exportar y Configuración: abajo del cuadro de vista previa, dos cuadros lado a lado */
+/* Exportar y Configuración: abajo del cuadro de vista previa, dos cuadros lado a lado y misma altura */
 .studio-preview-export {
   flex-shrink: 0;
   width: 100%;
@@ -236,7 +273,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  align-items: flex-start;
+  align-items: stretch;
 }
 .studio-preview-export .export-panel,
 .studio-preview-export .config-panel {
@@ -244,8 +281,10 @@
   min-width: 200px;
   margin: 0;
   box-shadow: none;
-  background: var(--color-bg);
+  background: var(--color-studio-block);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
 }
 /* Exportar: mismas filas que Edición del icono (label izquierda, control derecha) */
 .studio-preview-export .export-panel .controls {
@@ -406,6 +445,8 @@
 }
 .control-label { min-width: 5.5rem; color: var(--color-muted); }
 .control-value { color: var(--color-text); font-variant-numeric: tabular-nums; }
+.control-row-select { flex-wrap: nowrap; }
+.control-row-select select { flex: 1; min-width: 0; }
 .control-row-shapes { align-items: flex-start; }
 .control-row-shapes .control-label { flex-shrink: 0; }
 .shape-options {
@@ -435,6 +476,41 @@
 }
 .control-row-checkbox { gap: 0.5rem; }
 .control-row-checkbox input[type='checkbox'] { accent-color: var(--color-accent); cursor: pointer; }
+
+/* Logo editor: fuente tipo combobox */
+.logo-font-input { width: 100%; }
+.logo-font-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 12rem;
+  overflow-y: auto;
+  padding: 0.25rem 0;
+  border-radius: 6px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+.logo-font-suggestion-item {
+  display: block;
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  font-size: 0.9rem;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+.logo-font-suggestion-item:hover {
+  background: var(--color-surface-hover);
+}
+.logo-font-suggestion-item.is-selected {
+  background: var(--color-accent);
+  color: white;
+}
+
 .controls input[type='text'], .controls select {
   padding: 0.4rem 0.6rem; border-radius: 6px; border: 1px solid var(--color-border);
   background: var(--color-bg); color: var(--color-text); font-size: 0.9rem;

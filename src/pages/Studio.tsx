@@ -21,7 +21,7 @@ const initialIconState: IconState = {
   frameShape: 'rectangle',
   frameRounded: 8,
   frameSize: 64,
-  frameColor: '#1e293b',
+  frameColor: '#475569',
   frameBorderSameAsFill: false,
   frameFillEnabled: false,
   frameFillColor: '#e2e8f0',
@@ -30,10 +30,16 @@ const initialIconState: IconState = {
 
 const initialLogoState: LogoState = {
   text: 'VectorLab',
+  fontFamily: 'Poppins',
+  fontWeight: 700,
   fontSize: 28,
+  letterSpacing: 0,
   color: '#1e293b',
   backgroundColor: '#e2e8f0',
   shape: 'rounded',
+  frameEnabled: false,
+  frameColor: '#475569',
+  frameBorderSameAsContent: false,
 }
 
 export default function Studio() {
@@ -103,9 +109,14 @@ export default function Studio() {
   return (
     <Layout>
       <main className="studio-main">
+        <header className="studio-header-title">
+          <h1 className="text-2xl font-bold text-stone-900 dark:text-white">
+            {tab === 'icons' ? 'Editor de iconos' : 'Editor de logos'}
+          </h1>
+        </header>
         <div className="studio-app">
           <div className="studio-grid">
-            {/* Columna izquierda: solo selección de icono/logo */}
+            {/* Columna izquierda: misma altura que solo el cuadro Vista previa */}
             <div className="studio-left">
               {tab === 'icons' && (
                 <IconEditor
@@ -123,7 +134,7 @@ export default function Studio() {
               )}
             </div>
 
-            {/* Columna derecha: vista previa + exportar (mismo ancho) */}
+            {/* Cuadro Vista previa (misma fila que el editor, misma altura) */}
             <div className="studio-preview-box">
               <span className="studio-preview-label">Vista previa</span>
               <div
@@ -166,19 +177,21 @@ export default function Studio() {
                   </button>
                 </div>
               </div>
-              <div className="studio-preview-export">
-                <ExportPanel
-                  svgString={svgString}
-                  defaultFilename={defaultFilename}
-                  {...exportDims}
-                />
-                <ConfigPanel
-                  tab={tab}
-                  iconState={iconState}
-                  logoState={logoState}
-                  onImport={handleImportConfig}
-                />
-              </div>
+            </div>
+
+            {/* Exportar y Configuración: debajo del cuadro Vista previa, solo columna derecha */}
+            <div className="studio-preview-export">
+              <ExportPanel
+                svgString={svgString}
+                defaultFilename={defaultFilename}
+                {...exportDims}
+              />
+              <ConfigPanel
+                tab={tab}
+                iconState={iconState}
+                logoState={logoState}
+                onImport={handleImportConfig}
+              />
             </div>
           </div>
         </div>

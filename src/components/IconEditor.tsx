@@ -138,7 +138,10 @@ export function IconEditor({ state, onChange, hidePreview }: IconEditorProps) {
   )
 
   const handlePasteImage = useCallback(() => {
-    if (!navigator.clipboard?.read) return
+    if (!navigator.clipboard?.read) {
+      alert('Su navegador no permite leer el portapapeles.')
+      return
+    }
     navigator.clipboard.read().then(async (items) => {
       const imageList: { type: string; blob: Blob }[] = []
       for (const item of items) {
@@ -150,7 +153,10 @@ export function IconEditor({ state, onChange, hidePreview }: IconEditorProps) {
           if (blob) imageList.push({ type, blob })
         }
       }
-      if (imageList.length === 0) return
+      if (imageList.length === 0) {
+        alert('No hay ninguna imagen en el portapapeles o el formato no es compatible. Use PNG, JPEG, WebP o SVG.')
+        return
+      }
       if (imageList.length === 1) {
         const file = new File([imageList[0].blob], 'pasted', { type: imageList[0].type })
         applyImageFile(file)
@@ -159,7 +165,9 @@ export function IconEditor({ state, onChange, hidePreview }: IconEditorProps) {
       setPasteModalImages(
         imageList.map(({ type, blob }) => ({ type, blob, objectUrl: URL.createObjectURL(blob) }))
       )
-    }).catch(() => {})
+    }).catch(() => {
+      alert('No se pudo leer el portapapeles. Compruebe los permisos del navegador.')
+    })
   }, [applyImageFile])
 
   const handleSelectPastedImage = useCallback(

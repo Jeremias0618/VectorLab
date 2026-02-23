@@ -7,6 +7,8 @@ interface LayoutProps {
   className?: string
 }
 
+const VISITOR_BADGE_URL = 'https://visitor-badge.laobi.icu/badge?page_id=Jeremias0618.VectorLab'
+
 export default function Layout({ children, className = '' }: LayoutProps) {
   return (
     <div
@@ -16,6 +18,21 @@ export default function Layout({ children, className = '' }: LayoutProps) {
       <div className="flex-1 flex flex-col">
         {children}
       </div>
+      <footer className="py-4 flex justify-center border-t border-stone-200/80 dark:border-slate-800/80">
+        <a
+          href="https://github.com/Jeremias0618/VectorLab"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-block"
+          aria-label="Contador de visitas"
+        >
+          <img
+            src={VISITOR_BADGE_URL}
+            alt="Visitas"
+            className="h-5 w-auto"
+          />
+        </a>
+      </footer>
     </div>
   )
 }

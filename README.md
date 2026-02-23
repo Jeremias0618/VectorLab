@@ -1,69 +1,43 @@
 # VectorLab
 
-**Laboratorio de iconos y logos en código abierto.** Crea iconos SVG y logos, y descárgalos en múltiples formatos: PNG, SVG y WebP.
+**Editor de iconos y logos en código abierto.** Crea iconos SVG y logos desde el navegador, personaliza fuentes y estilos, y exporta en PNG, SVG y WebP.
 
 [![Licencia: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![GitHub visitors](https://visitor-badge.laobi.icu/badge?page_id=Jeremias0618.VectorLab)](https://github.com/Jeremias0618/VectorLab)
+[![React](https://img.shields.io/badge/React-18+-61DAFB?style=flat&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7+-646CFF?style=flat&logo=vite&logoColor=white)](https://vite.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4+-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
 **Autor:** [Yeremi Tantaraico](https://github.com/Jeremias0618) · **Cybercode Labs**
 
 ## ¿Qué es VectorLab?
 
-VectorLab es una aplicación web de código abierto que te permite:
+VectorLab es una aplicación web de código abierto que permite:
 
-- **Crear iconos SVG** desde cero o a partir de plantillas
-- **Crear logos** personalizados
-- **Exportar** tus diseños en:
-  - **SVG** — gráficos vectoriales escalables
-  - **PNG** — imagen raster para uso universal
-  - **WebP** — formato moderno con buena compresión
+- **Editor de iconos:** Crear iconos SVG a partir de plantillas (formas predefinidas), ajustar color, tamaño, marco (rectángulo, círculo, redondeado) y exportar en SVG, PNG o WebP. Puedes arrastrar una imagen sobre la vista previa para usarla como base.
+- **Editor de logos:** Diseñar logos con texto personalizable: fuente (búsqueda y sugerencias), peso, tamaño, espaciado, color, fondo (sin fondo, círculo, redondeado) y opción de cuadro/borde. Vista previa en tiempo real y exportación en los mismos formatos.
+- **Conversor a SVG:** Subir una o varias imágenes (PNG, JPEG, WebP o SVG), convertirlas a SVG y descargar el resultado de forma individual o en lote.
 
-Ideal para desarrolladores, diseñadores y proyectos que necesitan iconografía y branding sin depender de herramientas de pago.
+Incluye tema claro/oscuro, interfaz responsive y panel de configuración para exportar e importar el estado del editor en JSON.
 
 ## Características
 
-- [x] Editor de iconos SVG (plantillas predefinidas)
-- [x] Editor de logos (texto + estilo)
-- [x] Exportación a PNG, SVG y WebP
-- [x] Interfaz responsive y tema claro/oscuro
-- [x] 100 % código abierto (MIT)
-- [ ] Más plantillas de iconos y logos
-- [ ] Editor de formas personalizadas
+- Editor de iconos SVG con plantillas y marcos configurables
+- Editor de logos con fuentes (Google Fonts), peso y fondos
+- Conversor de imágenes a SVG (arrastrar o seleccionar archivos)
+- Exportación a SVG, PNG y WebP
+- Tema claro/oscuro y diseño responsive
+- Código abierto bajo licencia MIT
 
 ## Tecnologías
 
-- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
-- [Vite](https://vite.dev/) para desarrollo y build
-- SVG nativo para gráficos vectoriales
-
-## Requisitos
-
-- Node.js 18+
-- npm o pnpm
-
-## Instalación
-
-```bash
-# Clonar el repositorio
-git clone https://github.com/Jeremias0618/VectorLab.git
-cd VectorLab
-
-# Instalar dependencias
-npm install
-
-# Modo desarrollo
-npm run dev
-```
-
-La app se abrirá en `http://localhost:5173` (o el puerto que indique Vite).
-
-## Scripts
-
-| Comando       | Descripción              |
-|---------------|--------------------------|
-| `npm run dev` | Servidor de desarrollo   |
-| `npm run build` | Build de producción   |
-| `npm run preview` | Vista previa del build |
-| `npm run lint` | Ejecutar ESLint         |
+- **React** + **TypeScript** — interfaz y tipado
+- **Vite** — desarrollo y build
+- **Tailwind CSS** — estilos
+- **React Router** — rutas
+- **SVG** nativo para los gráficos (sin librerías de dibujo)
+- **Google Fonts** y **Material Design Icons** para el editor de logos y la navegación
 
 ## Contribuir
 

@@ -16,7 +16,7 @@ export default function Home() {
               Ahora con soporte WebP
             </div>
             <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight leading-[1.1]">
-              El estudio de iconos y logos <span className="gradient-text">open-source</span>
+              El editor de iconos y logos <span className="gradient-text">open-source</span>
             </h1>
             <p className="text-xl text-slate-500 dark:text-slate-400 leading-relaxed max-w-xl">
               Crea recursos SVG de alta calidad en segundos. Personaliza cada detalle, exporta en varios formatos y mantén tu flujo de diseño sin fricciones.
@@ -52,7 +52,7 @@ export default function Home() {
                 </span>
               </div>
               <p className="text-center text-sm text-slate-500 dark:text-slate-400 mb-6">
-                Vista previa referencial. La edición real está en el estudio.
+                Vista previa referencial. La edición real está en el editor.
               </p>
               <Link
                 to="/editor/iconos"
@@ -64,6 +64,72 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Herramientas — accesos directos */}
+        <section className="mt-24 lg:mt-32">
+          <h2 className="text-2xl font-bold text-stone-900 dark:text-white mb-8">
+            Herramientas
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Link
+              to="/editor/iconos"
+              className="group flex items-start gap-4 p-6 rounded-2xl border-2 border-stone-200 dark:border-slate-700 bg-white dark:bg-slate-900/50 hover:border-[var(--color-primary)] hover:shadow-lg transition-all"
+            >
+              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] group-hover:scale-105 transition-transform">
+                <span className="material-icons-round text-2xl">brush</span>
+              </span>
+              <div>
+                <h3 className="font-bold text-stone-900 dark:text-white mb-1">Editor de iconos</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Crea y personaliza iconos SVG con plantillas, marcos y colores.
+                </p>
+              </div>
+            </Link>
+            <Link
+              to="/editor/logos"
+              className="group flex items-start gap-4 p-6 rounded-2xl border-2 border-stone-200 dark:border-slate-700 bg-white dark:bg-slate-900/50 hover:border-[var(--color-primary)] hover:shadow-lg transition-all"
+            >
+              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] group-hover:scale-105 transition-transform">
+                <span className="material-icons-round text-2xl">text_fields</span>
+              </span>
+              <div>
+                <h3 className="font-bold text-stone-900 dark:text-white mb-1">Editor de logos</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Diseña logos con texto, fuentes, peso y fondos personalizables.
+                </p>
+              </div>
+            </Link>
+            <Link
+              to="/svg-converter"
+              className="group flex items-start gap-4 p-6 rounded-2xl border-2 border-stone-200 dark:border-slate-700 bg-white dark:bg-slate-900/50 hover:border-[var(--color-primary)] hover:shadow-lg transition-all"
+            >
+              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] group-hover:scale-105 transition-transform">
+                <span className="material-icons-round text-2xl">image</span>
+              </span>
+              <div>
+                <h3 className="font-bold text-stone-900 dark:text-white mb-1">Conversor a SVG</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Convierte PNG, JPEG o WebP a SVG para uso vectorial.
+                </p>
+              </div>
+            </Link>
+          </div>
+        </section>
+
+        {/* Info básica del proyecto */}
+        <section className="mt-24 lg:mt-32 pb-16">
+          <div className="rounded-2xl border border-stone-200 dark:border-slate-700 bg-stone-50/80 dark:bg-slate-900/50 p-8 lg:p-10">
+            <h2 className="text-xl font-bold text-stone-900 dark:text-white mb-4">
+              Sobre el proyecto
+            </h2>
+            <p className="text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mb-4">
+              VectorLab es una aplicación web de código abierto para crear iconos SVG y logos, y exportarlos en SVG, PNG y WebP. Pensada para desarrolladores y diseñadores que necesitan recursos vectoriales sin depender de software de pago.
+            </p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Licencia MIT · Código abierto. Desarrollado con React, TypeScript y Vite.
+            </p>
+          </div>
+        </section>
       </main>
     </Layout>
   )
