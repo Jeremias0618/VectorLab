@@ -2,9 +2,12 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Studio from './pages/Studio'
 
+// Base path para GitHub Pages (debe coincidir con base en vite.config.ts)
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '')
+
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/editor" element={<Navigate to="/editor/iconos" replace />} />
