@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+/* Dark mode por clase */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* VectorLab — paleta sin morado: azul + beige/claro y oscuro */
+@theme {
+  --color-primary: #0c6bdc;
+  --color-primary-hover: #0a5bb8;
+  --color-background-light: #faf9f7;
+  --color-background-dark: #0c1222;
+  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+  --radius: 12px;
+}
+
+/* Utilidades */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.glass-light {
+  background: rgba(250, 249, 247, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+.dark .glass-light {
+  background: rgba(12, 18, 34, 0.9);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+/* Texto con gradiente azul (sin morado) */
+.gradient-text {
+  background: linear-gradient(135deg, #0c6bdc 0%, #0ea5e9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+}
+.animate-pulse-soft {
+  animation: pulse-soft 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+body {
+  font-family: var(--font-display);
+  margin: 0;
+  min-height: 100vh;
+}

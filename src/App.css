@@ -1,0 +1,225 @@
+/* VectorLab — layout y componentes */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.brand {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.25rem 0;
+  color: var(--color-text);
+}
+
+.tagline {
+  margin: 0 0 1.25rem 0;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tabs button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.tabs button:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-accent);
+}
+
+.tabs button.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: white;
+}
+
+/* Main content */
+.main {
+  display: grid;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+@media (min-width: 640px) {
+  .main {
+    grid-template-columns: 1fr 1fr;
+  }
+  .export-panel {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 900px) {
+  .main {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Editor panels */
+.editor-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.editor-panel h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Preview area */
+.preview-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  padding: 1rem;
+  background: var(--color-preview-bg);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.preview-svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-svg svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.preview-logo svg {
+  max-height: 80px;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.controls label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.controls label span:first-of-type {
+  min-width: 6rem;
+  color: var(--color-muted);
+}
+
+.controls input[type='text'],
+.controls input[type='color'],
+.controls select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.controls input[type='text'] {
+  flex: 1;
+  min-width: 120px;
+}
+
+.controls input[type='color'] {
+  width: 2.25rem;
+  height: 2rem;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.controls input[type='range'] {
+  flex: 1;
+  min-width: 80px;
+  accent-color: var(--color-accent);
+}
+
+.color-hex {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Download button */
+.btn-download {
+  margin-top: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--color-accent);
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.1s;
+}
+
+.btn-download:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.btn-download:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-download:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Footer */
+.footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.footer a {
+  color: var(--color-muted);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: var(--color-accent);
+}
