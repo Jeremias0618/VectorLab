@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/Jeremias0618/VectorLab.git"
   },
-  "homepage": "https://github.com/Jeremias0618/VectorLab#readme",
+  "homepage": "https://github.com/Jeremias0618/VectorLab",
   "type": "module",
   "scripts": {
     "dev": "vite",
